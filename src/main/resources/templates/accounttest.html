@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script>
+function callajax(){
+	
+	// 공통데이터 조립
+	var commonobj = new Object();	
+	
+	commonobj.GUID = getGuid();
+	commonobj.TRX_DATETIME = getCurrentDateTime();
+	commonobj.REQUEST_TYPE = 'S';
+	
+	// 비지니스데이터 조립
+	var inputname = ﻿$('[name=form] #name').val();	
+	var bizobj = new Object();
+	bizobj.NAME=inputname;
+	
+	
+	// 전체데이터 조립
+	var allobj = new Object();
+	allobj.COMMONDATA = commonobj;
+	allobj.BIZDATA = bizobj;
+	
+	var jsonData = JSON.stringify(allobj);
+	
+	$('#requestjson').val(jsonData);
+	
+    $.ajax({	        
+        url : '/accountbyname',
+        type : 'POST',
+        contentType : 'application/json',
+        data : jsonData,
+        success : function(data){
+        	$('#responsejson').val(JSON.stringify(data));
+        }
+    });
+}
+
+function getGuid(){
+	var today = new Date();
+	
+	var milliseconds = ('0' + today.getMilliseconds()).slice(-3);
+	var datetime = getCurrentDateTime()+milliseconds
+
+	return datetime + 'PTSTSVR0100001';
+}
+
+function getCurrentDateTime(){
+	var today = new Date();
+
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+
+	var dateString = year + month + day;
+	
+	var hours = ('0' + today.getHours()).slice(-2); 
+	var minutes = ('0' + today.getMinutes()).slice(-2);
+	var seconds = ('0' + today.getSeconds()).slice(-2);
+
+	var timeString = hours +  minutes + seconds;
+	return dateString + timeString
+}
+</script>
+</head>
+<body>
+
+<div class="container">
+    <div>
+    	<h1>계좌조회테스트</h1>
+        <h2>이름으로 조회</h2>
+        <form name="form" id="form" onsubmit="return false">
+		    <input type="text" name="name" id="name" value="손정규" />
+		    <button id="button1" onclick="callajax()">조회하기</button>
+
+		</form>
+		<span>요청데이터</span>
+		<br/>
+		<textarea id="requestjson" style="width:100%;border:1;overflow:visible;text-overflow:ellipsis;" rows=10></textarea>
+		<br/>
+		<span>응답데이터</span>
+		<br/>
+		<textarea id="responsejson" style="width:100%;border:1;overflow:visible;text-overflow:ellipsis;" rows=20></textarea>
+      
+        <p>
+            <a href="/">홈 화면</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+		table {
+		  width: 100%;
+		  border: 1px solid #444444;
+		}
+		th, td {
+		  border: 1px solid #444444;
+		}
+	</style>
+</head>
+
+<body>
+<div class="container">
+    <div>
+    	<h1>거래 로그</h1>
+        <p></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>로그ID</th>
+                    <th>URL</th>
+                    <th>거래시간</th>
+                    <th>로그시간</th>
+                    <th>GUID</th>
+                    <th>요청타입</th>
+                    <th>응답결과</th>
+                    <th>비지니스데이터</th>
+                    <th>수행시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="log : ${loglist}">
+                    <td th:text="${log.LOG_ID}"></td>
+                    <td th:text="${log.URL}"></td>
+                    <td th:text="${log.TRX_DATETIME}"></td>
+                    <td th:text="${log.LOG_DATETIME}"></td>
+                    <td th:text="${log.GUID}"></td>
+                    <td th:text="${log.REQUEST_TYPE}"></td>
+                    <td th:text="${log.RESPONSE_TYPE}"></td>
+                    <td th:text="${log.BIZDATA}"></td>
+                    <td th:text="${log.PROCESS_TIME}"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p>
+            <a href="/">홈 화면</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
